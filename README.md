@@ -8,6 +8,6 @@ sử dụng sql server, thay đổi ConnectionStrings.Default trong file appsett
 <br>
 ! cài dotnet-ef nếu chưa có  dotnet tool install --global dotnet-ef 
 <br>
-dotnet ef migrations add InitialCreate
+dotnet ef migrations add InitialCreate // nếu đã có folder Migrations thì không cần chạy 
 <br>
 dotnet ef database update
