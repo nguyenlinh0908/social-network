@@ -6,14 +6,24 @@
         <div class="row">
           <div class="col-md-7 pe-0">
             <div class="form-left h-100 py-5 px-5">
-              <form action="" class="row g-4">
+              <form
+                method="post"
+                asp-controller="Auth"
+                asp-action="Login"
+                class="row g-4"
+              >
                 <div class="col-12">
-                  <label>Email/Số điện thoại<span class="text-danger">*</span></label>
+                  <label
+                    >Email/Số điện thoại<span class="text-danger"
+                      >*</span
+                    ></label
+                  >
                   <div class="input-group">
                     <div class="input-group-text">
                       <i class="bi bi-person-fill"></i>
                     </div>
                     <input
+                      name="phoneOrEmail"
                       type="text"
                       class="form-control"
                       placeholder="Nhập email hoặc số điện thoại"
@@ -28,6 +38,7 @@
                       <i class="bi bi-lock-fill"></i>
                     </div>
                     <input
+                      name="password"
                       type="text"
                       class="form-control"
                       placeholder="Nhập mật khẩu"
@@ -49,9 +60,7 @@
                 </div>
 
                 <div class="col-sm-6">
-                  <a href="#" class="float-end text-primary"
-                    >Quên mật khẩu?</a
-                  >
+                  <a href="#" class="float-end text-primary">Quên mật khẩu?</a>
                 </div>
 
                 <div class="col-12">
@@ -69,7 +78,11 @@
             <div
               class="form-right h-100 bg-primary text-white text-center pt-5"
             >
-             <img class="w-50 text-white" src="~/assets/images/logo.svg" alt="logo">
+              <img
+                class="w-50 text-white"
+                src="~/assets/images/logo.svg"
+                alt="logo"
+              />
               <h2 class="fs-1">Chào mừng trở lại!!!</h2>
             </div>
           </div>

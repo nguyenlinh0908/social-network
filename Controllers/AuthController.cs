@@ -4,6 +4,10 @@ using social_network.Data;
 using social_network.Models;
 using System.Security.Cryptography;
 using System.Text;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+
 namespace social_network.Controllers;
 
 public class AuthController : Controller
@@ -24,6 +28,62 @@ public class AuthController : Controller
     public IActionResult Index()
     {
         return View("Login");
+    }
+
+    [HttpPost("login")]
+    public async Task<IActionResult> Login(string phoneOrEmail, string password)
+    {
+        User verifyUser = this.verifyUser(phoneOrEmail, password);
+
+        if (verifyUser == null)
+        {
+            ViewBag["Message"] = "Thông tin đăng nhập không chính xác";
+            return RedirectToAction(null);
+        }
+
+        var claims = new List<Claim>{
+            new Claim(ClaimTypes.Name,  verifyUser.id.ToString()),
+            new Claim("email", verifyUser.email),
+            new Claim("phone", verifyUser.phoneNumber),
+            new Claim(ClaimTypes.Role, verifyUser.role.ToString()),
+        };
+
+        var claimsIdentity = new ClaimsIdentity(
+                    claims, CookieAuthenticationDefaults.AuthenticationScheme);
+        var authProperties = new AuthenticationProperties
+        {
+        };
+
+        await HttpContext.SignInAsync(
+           CookieAuthenticationDefaults.AuthenticationScheme,
+           new ClaimsPrincipal(claimsIdentity),
+           authProperties);
+
+        this._logger.LogInformation("User {Id} logged in at {Time}.",
+                   verifyUser.id, DateTime.UtcNow);
+                   
+        return RedirectToAction("Index", "Home", new { area = "" });
+    }
+
+    private User verifyUser(string phoneOrEmail, string password)
+    {
+        User user = this._context.User.Where(user => user.email == phoneOrEmail || user.phoneNumber == phoneOrEmail).FirstOrDefault();
+
+        if (user == null)
+        {
+            return null;
+        }
+
+
+        string hashedLoginPassword = this.hashPassword(password);
+        bool isValidPassword = this.isComparePassword(hashedLoginPassword, user.password);
+
+        if (!isValidPassword)
+        {
+            return null;
+        }
+
+        return user;
     }
 
     [HttpGet("register")]
@@ -128,8 +188,6 @@ public class AuthController : Controller
     public bool isExistEmail(string email)
     {
         User user = this._context.User.Where(user => user.email == email).FirstOrDefault();
-
-        this._logger.LogInformation("userid email", user);
 
         if (user != null)
         {
