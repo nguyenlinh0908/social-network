@@ -14,8 +14,42 @@
     <script src="~/lib/jquery/dist/jquery.js"></script>
   </head>
   <body>
-    <div class="container-fluid">@RenderBody()</div>
+    <!-- Side-Nav -->
+    <div
+      class="side-navbar active-nav d-flex bg-primary justify-content-between flex-wrap flex-column"
+      id="sidebar"
+    >
+      <ul class="nav flex-column text-white w-100">
+        <a href="#" class="nav-link h3 text-white my-2"> IConnect </a>
+        <li href="#" class="nav-link">
+          <i class="bx bxs-dashboard"></i>
+          <span class="mx-2">Dashboard</span>
+        </li>
+        <li href="#" class="nav-link">
+          <i class="bx bx-user-check"></i>
+          <span class="mx-2">Location</span>
+        </li>
+        <li href="#" class="nav-link">
+          <i class="bx bx-conversation"></i>
+          <span class="mx-2">User</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Main Wrapper -->
+    <div class="p-3 my-container active-cont">
+      <!-- Top Nav -->
+      <nav class="navbar top-navbar navbar-light bg-light px-5">
+        <a class="btn border-0 bg-primary" id="menu-btn"
+          ><img src="~/assets/images/white-menu.svg" alt="menu-icon"
+        /></a>
+      </nav>
+      <!--End Top Nav -->
+      @RenderBody()
+    </div>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/admin.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)

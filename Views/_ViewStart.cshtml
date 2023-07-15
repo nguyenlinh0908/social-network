@@ -1,12 +1,13 @@
 ﻿@{
-    switch ("User")  
+    string CurrentReq = Convert.ToString(Context.Request.HttpContext.Request.RouteValues["Controller"]);
+    switch (CurrentReq)  
     {  
-        case "User":  
-            Layout = "_Layout";  
-            break;  
-        default:  
+        case "Admin":  
             //Admin layout  
             Layout = "_AdminLayout";  
+        break;  
+        default:  
+            Layout = "_Layout";  
             break;  
     }  
 }
