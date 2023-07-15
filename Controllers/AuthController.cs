@@ -61,8 +61,17 @@ public class AuthController : Controller
 
         this._logger.LogInformation("User {Id} logged in at {Time}.",
                    verifyUser.id, DateTime.UtcNow);
-                   
+
         return RedirectToAction("Index", "Home", new { area = "" });
+    }
+    
+    [HttpPost("logout")]
+    private async Task<IActionResult> logout()
+    {
+        // Clear the existing external cookie
+        await HttpContext.SignOutAsync(
+            CookieAuthenticationDefaults.AuthenticationScheme);
+        return View("Login");
     }
 
     private User verifyUser(string phoneOrEmail, string password)
