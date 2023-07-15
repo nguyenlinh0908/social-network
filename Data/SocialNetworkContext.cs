@@ -11,6 +11,8 @@ namespace social_network.Data
     {
         public SocialNetworkContext(DbContextOptions<SocialNetworkContext> options) : base(options)
         {
+
         }
+        public DbSet<User> User { get; set; }
     }
 }
