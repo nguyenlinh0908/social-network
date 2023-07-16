@@ -1,8 +1,214 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿<div class="d-flex justify-content-center">
+  <div class="card" style="width: 48rem">
+    <div class="border border-left border-right px-0">
+      <div class="p-3 d-flex d-flex justify-content-between border-bottom">
+        <h4 class="d-flex align-items-center mb-0">
+          IConnect <i class="far fa-xs fa-star ms-auto text-primary"></i>
+        </h4>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+        <div>
+          <div data-bs-toggle="modal" href="#create-location-modal">
+            <img src="~/assets/images/circle-plus.svg" alt="add" />
+          </div>
+        </div>
+      </div>
+      <div>
+        <div>
+          <div class="d-flex p-3 border-bottom">
+            <img
+              src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img (29).webp"
+              class="rounded-circle"
+              height="50"
+              alt="Avatar"
+              loading="lazy"
+            />
+            <div class="d-flex w-100 ps-3">
+              <div>
+                <a href="">
+                  <h6 class="text-body">
+                    Miley Cyrus
+                    <span class="small text-muted font-weight-normal"
+                      >mileycyrus</span
+                    >
+                    <span class="small text-muted font-weight-normal"> • </span>
+                    <span class="small text-muted font-weight-normal">2h</span>
+                    <span><i class="fas fa-angle-down float-end"></i></span>
+                  </h6>
+                </a>
+                <p style="line-height: 1.2">
+                  Lorem ipsum dolor, sit amet
+                  <a href="">#consectetur</a> adipisicing elit. Nobis assumenda
+                  eveniet ipsum libero mollitia vero doloremque
+                  <a href="">#perspiciatis</a> molestiae omnis, quam iure dicta
+                  reprehenderit distinctio facere labore atque, sit
+                  <a href="">#ratione</a> quo.
+                </p>
+                <div
+                  id="carouselExampleIndicators"
+                  class="carousel slide"
+                  data-bs-ride="carousel"
+                >
+                  <div class="carousel-indicators">
+                    <button
+                      type="button"
+                      data-bs-target="#carouselExampleIndicators"
+                      data-bs-slide-to="0"
+                      class="active"
+                      aria-current="true"
+                      aria-label="Slide 1"
+                    ></button>
+                    <button
+                      type="button"
+                      data-bs-target="#carouselExampleIndicators"
+                      data-bs-slide-to="1"
+                      aria-label="Slide 2"
+                    ></button>
+                    <button
+                      type="button"
+                      data-bs-target="#carouselExampleIndicators"
+                      data-bs-slide-to="2"
+                      aria-label="Slide 3"
+                    ></button>
+                  </div>
+                  <div class="carousel-inner">
+                    <div class="carousel-item active">
+                      <img
+                        src="https://vnw-img-cdn.popsww.com/api/v2/containers/file2/cms_thumbnails/doraemons9_07_horizontalposter-6c4d708980d3-1609395243354-9fo2xUfP.png"
+                        class="d-block w-100"
+                        alt="..."
+                      />
+                    </div>
+                    <div class="carousel-item">
+                      <img
+                        src="https://cdn.popsww.com/blog/sites/2/2023/07/doraemon-movie-43.jpg"
+                        class="d-block w-100"
+                        alt="..."
+                      />
+                    </div>
+                    <div class="carousel-item">
+                      <img
+                        src="https://static-images.vnncdn.net/files/publish/2023/6/5/4aaaaaa-917.jpg"
+                        class="d-block w-100"
+                        alt="..."
+                      />
+                    </div>
+                  </div>
+                  <button
+                    class="carousel-control-prev"
+                    type="button"
+                    data-bs-target="#carouselExampleIndicators"
+                    data-bs-slide="prev"
+                  >
+                    <span
+                      class="carousel-control-prev-icon"
+                      aria-hidden="true"
+                    ></span>
+                    <span class="visually-hidden">Previous</span>
+                  </button>
+                  <button
+                    class="carousel-control-next"
+                    type="button"
+                    data-bs-target="#carouselExampleIndicators"
+                    data-bs-slide="next"
+                  >
+                    <span
+                      class="carousel-control-next-icon"
+                      aria-hidden="true"
+                    ></span>
+                    <span class="visually-hidden">Next</span>
+                  </button>
+                </div>
+                <ul
+                  class="list-unstyled d-flex justify-content-start gap-3 mb-0 pe-xl-5"
+                >
+                  <li>
+                    <img src="~/assets/images/heart.svg" alt="" /><span
+                      class="small ps-2"
+                      >35</span
+                    >
+                  </li>
+                  <li>
+                    <img src="~/assets/images/comment.svg" alt="" />
+                  </li>
+                  <li>
+                    <img src="~/assets/images/share.svg" alt="" />
+                    <span class="small ps-2"> 7</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="modal fade"
+    id="create-location-modal"
+    aria-hidden="true"
+    aria-labelledby="create-location-modal"
+    tabindex="-1"
+  >
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="create-location-modal">Tạo bài reivew</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <form action="/admin/placeregister" method="post">
+          <div class="modal-body">
+            <label for="exampleDataList" class="form-label">Địa điểm</label>
+            <input
+              name="placeId"
+              class="form-control"
+              list="placeListOptions"
+              id="exampleDataList"
+              placeholder="Type to search..."
+            />
+            <datalist id="placeListOptions"> </datalist>
+
+            <label class="form-label" for="location-title">Nội dung</label>
+            <textarea
+              name="content"
+              class="form-control"
+              id="location-description"
+              cols="30"
+              rows="10"
+              placeholder="Mô tả"
+            ></textarea>
+
+            <label class="form-label" for="files">Files mô tả</label>
+            <input
+              id="files"
+              name="files[]"
+              class="form-control"
+              type="file"
+              multiple
+            />
+            <div id="file-review-container" class="d-flex justify-content-start gap-3 mt-3">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              data-bs-dismiss="modal"
+              aria-label="Close"
+              type="button"
+              class="btn btn-secondary"
+            >
+              Hủy
+            </button>
+            <button type="submit" class="btn btn-primary">Tạo mới</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>
+
+<script src="~/js/home.js"></script>
