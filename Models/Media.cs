@@ -13,7 +13,7 @@ namespace social_network.Models
     {
         [Key]
         public int id { get; set; }
-        
+
         [ForeignKey(nameof(User))]
         public int? userId { get; set; }
 
@@ -21,9 +21,9 @@ namespace social_network.Models
         public int? postId { get; set; }
 
         [ForeignKey(nameof(Place))]
-        public int?  placeId { get; set; }
+        public int? placeId { get; set; }
 
-        public MediaTypeEnum type { get; set; }
+        public MediaTypeEnum type { get; set; } = MediaTypeEnum.AVATAR;
 
         [DataType(DataType.Url)]
         public string url { get; set; }
