@@ -17,5 +17,8 @@ namespace social_network.Data
 
         public DbSet<Place> Place { get; set; }
 
+        public DbSet<Post> Post { get; set; }
+
+        public DbSet<Media> Media { get; set; }
     }
 }
