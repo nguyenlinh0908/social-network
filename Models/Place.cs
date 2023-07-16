@@ -8,7 +8,6 @@ namespace social_network.Models
         [Key]
         public int id { get; set; }
 
-        [ForeignKey(nameof(User))]
         public string countryCode { get; set; }
 
         [DataType(DataType.Text)]
@@ -17,6 +16,6 @@ namespace social_network.Models
         [DataType(DataType.Text)]
         public string description { get; set; }
 
-        public decimal reviewPoint { get; set; }
+        public double reviewPoint { get; set; }
     }
 }

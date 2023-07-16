@@ -14,5 +14,7 @@ namespace social_network.Data
 
         }
         public DbSet<User> User { get; set; }
+
+        public DbSet<Place> Place { get; set; }
     }
 }

@@ -1,0 +1,111 @@
+<div>
+  <div class="d-flex justify-content-end">
+    <a
+      class="btn btn-success"
+      data-bs-toggle="modal"
+      href="#create-location-modal"
+      role="button"
+      >+ Thêm địa chỉ</a
+    >
+  </div>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Tiêu đề</th>
+        <th scope="col">Mô tả</th>
+        <th scope="col">Quốc gia</th>
+        <th scope="col">Media</th>
+        <th scope="col">Point</th>
+        <th scope="col">Thao tác</th>
+      </tr>
+    </thead>
+    <tbody id="place-list">
+      <tr>
+        <th scope="row">1</th>
+        <td>Mark</td>
+        <td>Otto</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="d-flex justify-content-end">
+    <nav aria-label="Page navigation">
+      <ul id="place-paginate" class="pagination">
+      </ul>
+    </nav>
+  </div>
+
+  <div
+    class="modal fade"
+    id="create-location-modal"
+    aria-hidden="true"
+    aria-labelledby="create-location-modal"
+    tabindex="-1"
+  >
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="create-location-modal">Tạo địa chỉ</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <form action="/admin/placeregister" method="post">
+          <div class="modal-body">
+            <label class="form-label" for="location-title">Tiêu đề</label>
+            <input
+              name="title"
+              id="location-title"
+              class="form-control"
+              type="text"
+              placeholder="Tiêu đề"
+            />
+            <label class="form-label" for="location-title">Mã quốc gia</label>
+            <input
+              name="countryCode"
+              id="location-contry-code"
+              class="form-control"
+              type="text"
+              placeholder="Mã quốc gia"
+              value="VN"
+            />
+            <label class="form-label" for="location-title">Mô tả</label>
+            <textarea
+              name="description"
+              class="form-control"
+              id="location-description"
+              cols="30"
+              rows="10"
+              placeholder="Mô tả"
+            ></textarea>
+
+            <label for="location-file" class="form-label">Files mô tả</label>
+            <input
+              name="media"
+              class="form-control"
+              type="file"
+              id="location-file"
+              multiple
+            />
+          </div>
+          <div class="modal-footer">
+            <button
+              data-bs-dismiss="modal"
+              aria-label="Close"
+              type="button"
+              class="btn btn-secondary"
+            >
+              Hủy
+            </button>
+            <button type="submit" class="btn btn-primary">Tạo mới</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="~/js/place.js"></script>
