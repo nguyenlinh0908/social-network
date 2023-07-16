@@ -21,10 +21,10 @@ namespace social_network.Models
 
         [ForeignKey(nameof(Place))]
         public int placeId { get; set; }
-        
+
         [DataType(DataType.Text)]
         public string content { get; set; }
 
-        public StatusPostEnum status { get; set; }
+        public StatusPostEnum status { get; set; } = StatusPostEnum.PENDING;
     }
 }
