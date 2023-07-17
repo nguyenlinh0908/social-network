@@ -6,6 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddHttpContextAccessor();
 
 // setting for connection to sql server
 builder.Services.AddDbContext<SocialNetworkContext>(options =>
@@ -14,10 +15,14 @@ builder.Services.AddDbContext<SocialNetworkContext>(options =>
 // add cookie authentication
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme,
-        options =>{
+        options =>
+        {
             options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
             options.SlidingExpiration = true;
             options.AccessDeniedPath = "/Forbidden/";
+            options.LoginPath = "/login";
+            options.LogoutPath = "/logout";
+
         });
 
 var app = builder.Build();

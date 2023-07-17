@@ -13,7 +13,7 @@
         </div>
       </div>
       <div>
-        <div>
+        <div id="new-feed">
           <div class="d-flex p-3 border-bottom">
             <img
               src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img (29).webp"
@@ -161,51 +161,51 @@
             aria-label="Close"
           ></button>
         </div>
-        <form action="/admin/placeregister" method="post">
-          <div class="modal-body">
-            <label for="exampleDataList" class="form-label">Địa điểm</label>
-            <input
-              name="placeId"
-              class="form-control"
-              list="placeListOptions"
-              id="exampleDataList"
-              placeholder="Type to search..."
-            />
-            <datalist id="placeListOptions"> </datalist>
+        <div class="modal-body">
+          <label for="place-list" class="form-label">Địa điểm</label>
+          <input
+            name="placeId"
+            class="form-control"
+            list="placeListOptions"
+            id="place-list"
+            placeholder="Type to search..."
+          />
+          <datalist id="placeListOptions"></datalist>
 
-            <label class="form-label" for="location-title">Nội dung</label>
-            <textarea
-              name="content"
-              class="form-control"
-              id="location-description"
-              cols="30"
-              rows="10"
-              placeholder="Mô tả"
-            ></textarea>
+          <label class="form-label" for="location-title">Nội dung</label>
+          <textarea
+            name="content"
+            class="form-control"
+            id="post-content"
+            cols="30"
+            rows="10"
+            placeholder="Mô tả"
+          ></textarea>
 
-            <label class="form-label" for="files">Files mô tả</label>
-            <input
-              id="files"
-              name="files[]"
-              class="form-control"
-              type="file"
-              multiple
-            />
-            <div id="file-review-container" class="d-flex justify-content-start gap-3 mt-3">
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button
-              data-bs-dismiss="modal"
-              aria-label="Close"
-              type="button"
-              class="btn btn-secondary"
-            >
-              Hủy
-            </button>
-            <button type="submit" class="btn btn-primary">Tạo mới</button>
-          </div>
-        </form>
+          <label class="form-label" for="files">Files mô tả</label>
+          <input
+            id="files"
+            name="files[]"
+            class="form-control"
+            type="file"
+            multiple
+          />
+          <div
+            id="file-review-container"
+            class="d-flex justify-content-start gap-3 mt-3"
+          ></div>
+        </div>
+        <div class="modal-footer">
+          <button
+            data-bs-dismiss="modal"
+            aria-label="Close"
+            type="button"
+            class="btn btn-secondary"
+          >
+            Hủy
+          </button>
+          <button id="c-post" type="button" class="btn btn-primary">Tạo mới</button>
+        </div>
       </div>
     </div>
   </div>

@@ -19,7 +19,7 @@ const uploadFiles = (files) => {
   console.log(files);
   if (files.length <= 0) return;
 
-  for (var i = 0; i <=files.length; i++) {
+  for (var i = 0; i <= files.length; i++) {
     formData.append("files", files[i]);
   }
 
@@ -31,7 +31,7 @@ const uploadFiles = (files) => {
     data: formData,
   })
     .done((result) => {
-      console.log(result);
+      localStorage.setItem("uploadUrl", result);
     })
     .fail((err) => {
       console.log(err);
