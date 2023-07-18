@@ -61,7 +61,7 @@ const getPosts = () => {
       console.log(result.length)
       if (result.length > 0) {
         let newFeed = "";
-        result.forEach((item) => {
+        result.forEach((item, idx) => {
           newFeed += `
           <div class="d-flex p-3 border-bottom">
               <img
@@ -75,7 +75,7 @@ const getPosts = () => {
               <div>
                   <a href="">
                     <h6 class="text-body">
-                      Miley Cyrus
+                      ${item?.owner?.firstName} ${item?.owner?.lastName}
                       <span class="small text-muted font-weight-normal"
                         >mileycyrus</span
                       >
@@ -89,7 +89,7 @@ const getPosts = () => {
                   </p>
 
                   <div
-                    id="carouselExampleIndicators"
+                    id="${`carouselExampleIndicators${idx}`}"
                     class="carousel slide"
                     data-bs-ride="carousel"
                   >
@@ -97,7 +97,7 @@ const getPosts = () => {
                       ${item?.media.map((me, ci) => {
                         return `<button
                           type="button"
-                          data-bs-target="#carouselExampleIndicators"
+                          data-bs-target="#${`carouselExampleIndicators${idx}`}"
                           data-bs-slide-to=${ci}
                           class="active"
                           aria-current="true"
@@ -107,7 +107,9 @@ const getPosts = () => {
                     </div>
                     <div class="carousel-inner">
                     ${item?.media.map((me, ci) => {
-                      return `<div class="carousel-item ${ci == 0 && "active"}">
+                      return `<div class="carousel-item ${
+                        ci == 0 && "active"
+                      }" style="max-height: 585px">
                         <img
                           src="${String(me?.url).replace("wwwroot", "")}"
                           class="d-block w-100"
@@ -119,7 +121,7 @@ const getPosts = () => {
                     <button
                       class="carousel-control-prev"
                       type="button"
-                      data-bs-target="#carouselExampleIndicators"
+                      data-bs-target="#${`carouselExampleIndicators${idx}`}"
                       data-bs-slide="prev"
                     >
                       <span
@@ -131,7 +133,7 @@ const getPosts = () => {
                     <button
                       class="carousel-control-next"
                       type="button"
-                      data-bs-target="#carouselExampleIndicators"
+                      data-bs-target="#${`carouselExampleIndicators${idx}`}"
                       data-bs-slide="next"
                     >
                       <span
