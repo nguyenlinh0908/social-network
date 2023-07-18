@@ -120,10 +120,9 @@ function eventValidFormRegisterAccount() {
   };
 
   registerForm.addEventListener("submit", (e) => {
-    e.preventDefault();
     const isValidForm = validForm();
-    console.log(isValidForm);
     if (!isValidForm) {
+      e.preventDefault();
     }
   });
 }

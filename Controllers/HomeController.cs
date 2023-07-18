@@ -8,7 +8,7 @@ using System.Security.Claims;
 
 namespace social_network.Controllers;
 
-// [Authorize]
+[Authorize]
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
@@ -21,7 +21,7 @@ public class HomeController : Controller
         _logger = logger;
         _context = context;
         _httpContextAccessor = httpContextAccessor;
-        // userId = httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Name).Value;
+        userId = httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Name).Value;
     }
 
     public IActionResult Index()
@@ -32,7 +32,7 @@ public class HomeController : Controller
     [HttpPost]
     public async Task<JsonResult> getPosts(PaginateScroll paginateScroll)
     {
-        List<PostResult> result = this._context.Post.Join(this._context.Media, post => post.id, media => media.userId, (post, media) => new
+        List<PostResult> result = this._context.Post.Join(this._context.Media, post => post.id, media => media.postId, (post, media) => new
         {
             post = post,
             media = media
@@ -40,38 +40,29 @@ public class HomeController : Controller
         {
             post = g.Key,
             media = g.Select(p => p.media).ToList()
-        }).Join(this._context.Place, com => com.post.placeId, p => p.id, (com, p) => new PostResult
+        }).Join(this._context.User, com => com.post.userId, u => u.id, (com, u) => new
         {
             post = com.post,
             media = com.media,
+            user = u
+        })
+        .Join(this._context.Place, com => com.post.placeId, p => p.id, (com, p) => new PostResult
+        {
+            post = com.post,
+            media = com.media,
+            owner = com.user,
             place = p
+        }).Select(g=> new PostResult{
+            post = g.post,
+            media = g.media,
+            owner = g.owner,
+            place = g.place, 
         }).ToList();
 
         PaginateResult<PostResult> paginateResult = new PaginateResult<PostResult>() { data = result, limit = paginateScroll.limit };
 
         return Json(paginateResult);
     }
-
-    // [HttpPost("/createpost")]
-    // public async Task<ActionResult> CreatePost(Post post, List<string> mediaUrls)
-    // {
-    //     post.userId = Int32.Parse(userId);
-
-    //     await this._context.Post.AddAsync(post);
-
-    //     if (mediaUrls.Any())
-    //     {
-    //         foreach (string item in mediaUrls)
-    //         {
-    //             Media media = new Media() { userId = Int32.Parse(userId), postId = post.id, type = MediaTypeEnum.AVATAR, url = item };
-    //             this._context.AddAsync(media);
-    //         }
-    //     }
-
-    //     int saved = await this._context.SaveChangesAsync();
-
-    //     return Ok(saved);
-    // }
 
     [HttpGet]
     public JsonResult getAllPlaces()
