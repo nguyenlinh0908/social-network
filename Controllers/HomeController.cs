@@ -52,11 +52,12 @@ public class HomeController : Controller
             media = com.media,
             owner = com.user,
             place = p
-        }).Select(g=> new PostResult{
+        }).Select(g => new PostResult
+        {
             post = g.post,
             media = g.media,
             owner = g.owner,
-            place = g.place, 
+            place = g.place,
         }).ToList();
 
         PaginateResult<PostResult> paginateResult = new PaginateResult<PostResult>() { data = result, limit = paginateScroll.limit };
@@ -72,6 +73,33 @@ public class HomeController : Controller
         PaginateResult<Place> result = new PaginateResult<Place> { data = allPlaces, limit = 0, currentPage = 1 };
 
         return Json(result);
+    }
+
+    [HttpPost("react")]
+    public async Task<JsonResult> reactPost(int postId, ReactionEnum react)
+    {
+
+        bool isExist = this._context.Reaction.Any(rec => rec.postId == postId && rec.userId == Int32.Parse(userId) && rec.reaction == ReactionEnum.LIKE);
+        bool isOppositeReact = false;
+
+        if (isExist)
+        {
+            var userToRemove = this._context.Reaction.SingleOrDefault(x => x.postId == postId && x.userId == Int32.Parse(userId) && x.reaction == ReactionEnum.LIKE);
+            if (userToRemove != null)
+            {
+                this._context.Reaction.Remove(userToRemove);
+                isOppositeReact = true;
+            }
+        }
+        else
+        {
+            await this._context.Reaction.AddAsync(new Reaction { userId = Int32.Parse(userId), postId = postId, reaction = ReactionEnum.LIKE });
+
+        }
+
+        int recordEffected = await this._context.SaveChangesAsync();
+        int currentQuantity = this._context.Reaction.Count(r => r.postId == postId && r.userId == Int32.Parse(userId) && r.reaction == react);
+        return Json(new ReactionResult { postId = postId, effected = recordEffected, react = react, oppositeReact = isOppositeReact, currentQuantity = currentQuantity });
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
