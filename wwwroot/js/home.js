@@ -58,7 +58,7 @@ const getPosts = () => {
     },
   })
     .done(({ data: result }) => {
-      console.log(result.length)
+      console.log(result.length);
       if (result.length > 0) {
         let newFeed = "";
         result.forEach((item, idx) => {
@@ -145,18 +145,18 @@ const getPosts = () => {
                   </div>
 
                   <ul
-                  class="list-unstyled d-flex justify-content-start gap-3 mb-0 pe-xl-5"
+                  class="list-unstyled d-flex justify-content-start gap-3 mb-0 pe-xl-5 "
                 >
-                  <li>
-                    <img src="/assets/images/heart.svg" alt="" /><span
+                  <li data-post="${item?.post?.id}" class="like-post">
+                    <img src="/assets/images/heart-border.svg" alt="" /><span
                       class="small ps-2"
                       >35</span
                     >
                   </li>
-                  <li>
+                  <li data-post="${item?.post?.id}" class="comment-post">
                     <img src="/assets/images/comment.svg" alt="" />
                   </li>
-                  <li>
+                  <li data-post="${item?.post?.id}" class="share-post">
                     <img src="/assets/images/share.svg" alt="" />
                     <span class="small ps-2"> 7</span>
                   </li>
@@ -168,8 +168,8 @@ const getPosts = () => {
           `;
         });
 
-        $("#new-feed").append(newFeed)
-        // console.log(newFeed);
+        $("#new-feed").append(newFeed);
+        reactPost();
       }
     })
     .fail((err) => {
@@ -180,6 +180,56 @@ const getPosts = () => {
     });
 };
 
+const reactPost = () => {
+  const REACT = {
+    LIKE: 0,
+    COMMENT: 1,
+    SHARE: 2,
+  };
+
+  const reaction = (e, postId, react) => {
+    console.log("postId, react :>> ", postId, react);
+    $.ajax({
+      url: "/react",
+      method: "POST",
+      data: {
+        postId: Number(postId),
+        react: react,
+      },
+    })
+      .done((data) => {
+        const { react, oppositeReact, currentQuantity } = data;
+        switch (react) {
+          case REACT.LIKE:
+            const [reactIcon] = $(e).children("img");
+            const [reactQuantity] = $(e).children("span");
+            if (oppositeReact) {
+              $(reactIcon).attr("src", "assets/images/heart-border.svg");
+            } else {
+              $(reactIcon).attr("src", "assets/images/heart.svg");
+            }
+
+            $(reactQuantity).html(currentQuantity);
+            break;
+          default:
+        }
+      })
+      .fail((err) => {
+        console.log(err);
+      })
+      .always(() => {
+        console.log("reacting");
+      });
+  };
+
+  $(".like-post").click((e) => {
+    const itemTarget = e.currentTarget;
+    const postId = $(itemTarget).data("post");
+    reaction(itemTarget, postId, REACT.LIKE);
+  });
+};
+
 place();
 createPost();
 getPosts();
+reactPost();
