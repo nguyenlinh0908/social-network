@@ -1,12 +1,6 @@
 <div>
   <div class="d-flex justify-content-end">
-    <a
-      class="btn btn-success"
-      data-bs-toggle="modal"
-      href="#create-location-modal"
-      role="button"
-      >+ Thêm địa chỉ</a
-    >
+    <a class="btn btn-success" data-bs-toggle="modal" href="#create-location-modal" role="button">+ Thêm địa chỉ</a>
   </div>
   <table class="table table-hover">
     <thead>
@@ -35,77 +29,93 @@
     </nav>
   </div>
 
-  <div
-    class="modal fade"
-    id="create-location-modal"
-    aria-hidden="true"
-    aria-labelledby="create-location-modal"
-    tabindex="-1"
-  >
+  <div class="modal fade" id="create-location-modal" aria-hidden="true" aria-labelledby="create-location-modal"
+    tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="create-location-modal">Tạo địa chỉ</h5>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
+          <h5 class="modal-title" id="create-location-modal">Tạo địa chỉ</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <form action="/admin/placeregister" method="post">
           <div class="modal-body">
             <label class="form-label" for="location-title">Tiêu đề</label>
-            <input
-              name="title"
-              id="location-title"
-              class="form-control"
-              type="text"
-              placeholder="Tiêu đề"
-            />
+            <input name="title" id="location-title" class="form-control" type="text" placeholder="Tiêu đề" />
             <label class="form-label" for="location-title">Mã quốc gia</label>
-            <input
-              name="countryCode"
-              id="location-contry-code"
-              class="form-control"
-              type="text"
-              placeholder="Mã quốc gia"
-              value="VN"
-            />
+            <input name="countryCode" id="location-contry-code" class="form-control" type="text"
+              placeholder="Mã quốc gia" value="VN" />
             <label class="form-label" for="location-title">Mô tả</label>
-            <textarea
-              name="description"
-              class="form-control"
-              id="location-description"
-              cols="30"
-              rows="10"
-              placeholder="Mô tả"
-            ></textarea>
-
+            <textarea name="description" class="form-control" id="location-description" cols="30" rows="10"
+              placeholder="Mô tả"></textarea>
             <label for="location-file" class="form-label">Files mô tả</label>
-            <input
-              name="media"
-              class="form-control"
-              type="file"
-              id="location-file"
-              multiple
-            />
+            <input name="media" class="form-control" type="file" id="location-file" multiple />
           </div>
           <div class="modal-footer">
-            <button
-              data-bs-dismiss="modal"
-              aria-label="Close"
-              type="button"
-              class="btn btn-secondary"
-            >
+            <button data-bs-dismiss="modal" aria-label="Close" type="button" class="btn btn-secondary">
               Hủy
             </button>
-            <button type="submit" class="btn btn-primary">Tạo mới</button>
+            <button type="submit" class="btn btn-primary">Tạo mới</button>
           </div>
         </form>
       </div>
     </div>
   </div>
+
+  <div class="modal fade" id="edit-location-modal" aria-hidden="true" aria-labelledby="edit-location-modal"
+    tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="edit-location-modal">Sửa địa chỉ</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form id="editForm">
+          <div class="modal-body">
+            <label class="form-label" for="location-title">ID</label>
+            <input type="text" class="form-control" id="editId" name="id" />
+
+            <label class="form-label" for="location-title">Tiêu đề</label>
+            <input type="text" class="form-control" id="editTitle" name="title" />
+
+            <label class="form-label" for="location-title">Mã quốc gia</label>
+            <input type="text" class="form-control" id="editCountryCode" name="countryCode" value="VN" />
+
+            <label class="form-label" for="location-title">Mô tả</label>
+            <textarea class="form-control" id="editDescription" name="description" cols="30" rows="10"></textarea>
+
+          </div>
+          <div class="modal-footer">
+            <button data-bs-dismiss="modal" aria-label="Close" type="button" class="btn btn-secondary">
+              Hủy
+            </button>
+            <button type="submit" class="btn btn-primary" id="saveChanges">Lưu</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="modal" id="deleteModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Confirm Delete</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure you want to delete this place?</p>
+          <label class="form-label" for="location-title">ID</label>
+          <input type="text" class="form-control" id="removeId" name="id" />
+        </div>
+        <div class="modal-footer">
+            <button data-bs-dismiss="modal" aria-label="Close" type="button" class="btn btn-secondary">Hủy</button>          
+            <button type="submit" class="btn btn-danger" id="confirmDelete">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <script src="~/js/place.js"></script>

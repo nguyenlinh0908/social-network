@@ -45,6 +45,39 @@ public class AdminController : Controller
         return Json(paginateResult);
     }
 
+    [HttpPost]
+    public IActionResult Update(int id, string title, string description, string countryCode)
+    {
+        var place = _context.Place.Find(id);
+
+        if (place == null)
+        {
+            return NotFound();
+        }
+
+        place.title = title;
+        place.description = description;
+        place.countryCode = countryCode;
+
+        _context.SaveChanges();
+        return View("Place");
+    }
+
+    [HttpPost]
+    public IActionResult Delete(int id)
+    {
+        var place = _context.Place.Find(id);
+        if (place == null)
+        {
+            return NotFound();
+        }
+
+        _context.Place.Remove(place);
+        _context.SaveChanges();
+
+        return View("Place");
+    }
+
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
