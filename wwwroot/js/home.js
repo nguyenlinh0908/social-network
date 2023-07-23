@@ -1,3 +1,9 @@
+const REACT = {
+  LIKE: 0,
+  COMMENT: 1,
+  SHARE: 2,
+};
+
 const place = () => {
   $.get("/home/getallplaces")
     .done((result) => {
@@ -36,16 +42,44 @@ const createPost = () => {
       },
     })
       .done((data) => {
+        if (!alert("Tạo bài viết thành công")) location.reload();
+
         console.log("data :>> ", data);
       })
       .fail((err) => {
-        console.log("err :>> ", err);
+        alert("Tạo bài viết không thành công");
       })
       .always(() => {
-        console.log("creating post");
         localStorage.removeItem("uploadUrl");
       });
   });
+};
+
+const mappingLikeAndCommentQuantity = (items = []) => {
+  let likeQuantity = 0;
+  let commentQuantity = 0;
+
+  if (items.length <= 0) {
+    return { likeQuantity, commentQuantity };
+  }
+
+  items.forEach((record) => {
+    if (record?.reaction == REACT.LIKE) {
+      ++likeQuantity;
+    }
+
+    if (record?.reaction == REACT.COMMENT) {
+      ++commentQuantity;
+    }
+  });
+  return { likeQuantity, commentQuantity };
+};
+
+const checkLikedPost = (reaction = [], user) => {
+  const isLiked = reaction.some((react) => {
+    return react?.userId == user?.id;
+  });
+  return isLiked;
 };
 
 const getPosts = () => {
@@ -62,6 +96,13 @@ const getPosts = () => {
       if (result.length > 0) {
         let newFeed = "";
         result.forEach((item, idx) => {
+          const { likeQuantity, commentQuantity } =
+            mappingLikeAndCommentQuantity(item?.reaction);
+          const liked = checkLikedPost(item?.reaction, item?.owner);
+
+          console.log("likedQuantity :>> ", likeQuantity);
+          console.log(liked)
+          console.log('item?.post?.id :>> ', item?.post?.id);
           newFeed += `
           <div class="d-flex p-3 border-bottom">
               <img
@@ -77,10 +118,10 @@ const getPosts = () => {
                     <h6 class="text-body">
                       ${item?.owner?.firstName} ${item?.owner?.lastName}
                       <span class="small text-muted font-weight-normal"
-                        >mileycyrus</span
+                        >tại ${item?.place?.title}</span
                       >
                       <span class="small text-muted font-weight-normal"> • </span>
-                      <span class="small text-muted font-weight-normal">2h</span>
+                      <span class="small text-muted font-weight-normal"></span>
                       <span><i class="fas fa-angle-down float-end"></i></span>
                     </h6>
                   </a>
@@ -148,28 +189,41 @@ const getPosts = () => {
                   class="list-unstyled d-flex justify-content-start gap-3 mb-0 pe-xl-5 "
                 >
                   <li data-post="${item?.post?.id}" class="like-post">
-                    <img src="/assets/images/heart-border.svg" alt="" /><span
+                    <img src="${
+                      liked
+                        ? "/assets/images/heart.svg"
+                        : "/assets/images/heart-border.svg"
+                    }" alt="" /><span
                       class="small ps-2"
-                      >35</span
+                      >${likeQuantity}</span
                     >
                   </li>
+                  <!--
                   <li data-post="${item?.post?.id}" class="comment-post">
                     <img src="/assets/images/comment.svg" alt="" />
+                   <span
+                      class="small ps-2"
+                      >${commentQuantity}</span
+                    >
                   </li>
                   <li data-post="${item?.post?.id}" class="share-post">
                     <img src="/assets/images/share.svg" alt="" />
                     <span class="small ps-2"> 7</span>
                   </li>
+                  -->
                 </ul>
-
                 </div>
               </div>
             </div>
           `;
         });
 
-        $("#new-feed").append(newFeed);
-        reactPost();
+        $("#new-feed").html(newFeed);
+        $("li.like-post").on("click", (e) => {
+          const itemTarget = e.currentTarget;
+          const postId = $(itemTarget).data("post");
+          reaction(itemTarget, postId, REACT.LIKE);
+        });
       }
     })
     .fail((err) => {
@@ -180,56 +234,42 @@ const getPosts = () => {
     });
 };
 
-const reactPost = () => {
-  const REACT = {
-    LIKE: 0,
-    COMMENT: 1,
-    SHARE: 2,
-  };
+const reaction = (e, postId, react) => {
+  $.ajax({
+    url: "/react",
+    method: "POST",
+    data: {
+      postId: Number(postId),
+      react: react,
+    },
+  })
+    .done((data) => {
+      const { react, oppositeReact, currentQuantity } = data;
+      switch (react) {
+        case REACT.LIKE:
+          const [reactIcon] = $(e).children("img");
+          const [reactQuantity] = $(e).children("span");
+          if (oppositeReact) {
+            $(reactIcon).attr("src", "assets/images/heart-border.svg");
+          } else {
+            $(reactIcon).attr("src", "assets/images/heart.svg");
+          }
+         
+          $(reactQuantity).html(currentQuantity);
+          break;
+        default:
+      }
 
-  const reaction = (e, postId, react) => {
-    console.log("postId, react :>> ", postId, react);
-    $.ajax({
-      url: "/react",
-      method: "POST",
-      data: {
-        postId: Number(postId),
-        react: react,
-      },
+      getPosts()
     })
-      .done((data) => {
-        const { react, oppositeReact, currentQuantity } = data;
-        switch (react) {
-          case REACT.LIKE:
-            const [reactIcon] = $(e).children("img");
-            const [reactQuantity] = $(e).children("span");
-            if (oppositeReact) {
-              $(reactIcon).attr("src", "assets/images/heart-border.svg");
-            } else {
-              $(reactIcon).attr("src", "assets/images/heart.svg");
-            }
-
-            $(reactQuantity).html(currentQuantity);
-            break;
-          default:
-        }
-      })
-      .fail((err) => {
-        console.log(err);
-      })
-      .always(() => {
-        console.log("reacting");
-      });
-  };
-
-  $(".like-post").click((e) => {
-    const itemTarget = e.currentTarget;
-    const postId = $(itemTarget).data("post");
-    reaction(itemTarget, postId, REACT.LIKE);
-  });
+    .fail((err) => {
+      console.log(err);
+    })
+    .always(() => {
+      console.log("reacting");
+    });
 };
 
 place();
 createPost();
 getPosts();
-reactPost();

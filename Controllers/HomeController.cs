@@ -32,32 +32,28 @@ public class HomeController : Controller
     [HttpPost]
     public async Task<JsonResult> getPosts(PaginateScroll paginateScroll)
     {
-        List<PostResult> result = this._context.Post.Join(this._context.Media, post => post.id, media => media.postId, (post, media) => new
+        List<PostResult> result = this._context.Post.GroupJoin(this._context.Media, p => p.id, me => me.postId, (p, meg) => new
         {
-            post = post,
-            media = media
-        }).GroupBy(p => p.post).Select(g => new
+            post = p,
+            media = meg.ToList()
+        }).ToList().GroupJoin(this._context.Reaction, pm => pm.post.id, rec => rec.postId, (pm, rec) => new
         {
-            post = g.Key,
-            media = g.Select(p => p.media).ToList()
-        }).Join(this._context.User, com => com.post.userId, u => u.id, (com, u) => new
-        {
-            post = com.post,
-            media = com.media,
-            user = u
-        })
-        .Join(this._context.Place, com => com.post.placeId, p => p.id, (com, p) => new PostResult
-        {
-            post = com.post,
-            media = com.media,
-            owner = com.user,
-            place = p
-        }).Select(g => new PostResult
+            post = pm.post,
+            media = pm.media,
+            reaction = rec.ToList()
+        }).ToList().Join(this._context.User, g => g.post.userId, u => u.id, (g, u) => new
         {
             post = g.post,
             media = g.media,
+            reaction = g.reaction,
+            owner = u
+        }).Join(this._context.Place, g => g.post.placeId, pl => pl.id, (g, pl) => new PostResult
+        {
+            post = g.post,
+            media = g.media,
+            reaction = g.reaction,
             owner = g.owner,
-            place = g.place,
+            place = pl
         }).ToList();
 
         PaginateResult<PostResult> paginateResult = new PaginateResult<PostResult>() { data = result, limit = paginateScroll.limit };
@@ -73,6 +69,28 @@ public class HomeController : Controller
         PaginateResult<Place> result = new PaginateResult<Place> { data = allPlaces, limit = 0, currentPage = 1 };
 
         return Json(result);
+    }
+
+    [HttpPost("/createpost")]
+    public async Task<ActionResult> CreatePost(Post post, List<string> mediaUrls)
+    {
+        post.userId = Int32.Parse(userId);
+
+        await this._context.Post.AddAsync(post);
+        this._context.SaveChanges();
+        if (mediaUrls.Any())
+        {
+            foreach (string item in mediaUrls)
+            {
+                this._logger.LogInformation("post id" + post.id);
+                Media media = new Media() { userId = Int32.Parse(userId), postId = post.id, type = MediaTypeEnum.AVATAR, url = item };
+                this._context.AddAsync(media);
+            }
+        }
+
+        int saved = await this._context.SaveChangesAsync();
+
+        return Ok(saved);
     }
 
     [HttpPost("react")]
