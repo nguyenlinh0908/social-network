@@ -10,11 +10,13 @@ public class PostResult
     public User owner { get; set; }
     public List<Media>? media { get; set; }
 
-    public bool liked { get; set; } = false;
+    public List<Reaction>? reaction { get; set; }
 
-    public int likeQuantity { get; set; } = 0;
+    public bool? liked { get; set; } = false;
 
-    public int commentQuantity { get; set; } = 0;
+    public int? likeQuantity { get; set; } = 0;
 
-    public int shareQuantity { get; set; } = 0;
+    public int? commentQuantity { get; set; } = 0;
+
+    public int? shareQuantity { get; set; } = 0;
 }
