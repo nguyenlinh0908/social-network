@@ -3,8 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using social_network.Data;
 using social_network.Models;
 using social_network.Entity;
+using Microsoft.AspNetCore.Authorization;
+
 namespace social_network.Controllers;
 
+[Authorize(Roles = "admin")]
 public class AdminController : Controller
 {
     private readonly ILogger<AdminController> _logger;

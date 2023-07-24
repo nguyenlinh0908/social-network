@@ -24,20 +24,20 @@ const getPlaces = (pageNumber = 1, limit = PAGINATE_LIMIT) => {
             <td>
               <a
                   id="editButton"
-                  class="btn btn-warning"
+                  class="d-block m-3 btn btn-warning"
                   data-bs-toggle="modal"
                   href="#edit-location-modal"
                   role="button"
                   data-place-id=${place.id}
-                  >Edit</a>
+                  ><img src="/assets/images/pencil.svg"/></a>
 
               <a
                   id="removeButton"
-                  class="btn btn-danger"
+                  class="d-block m-3 btn btn-danger"
                   data-bs-toggle="modal"
                   href="#deleteModal"
                   role="button"
-                  >Remove</a>
+                  ><img src="/assets/images/trash.svg"/></a>
             </td>
         </tr>
       `);
@@ -131,4 +131,3 @@ $("#confirmDelete").click(function () {
     }
   });
 });
-
