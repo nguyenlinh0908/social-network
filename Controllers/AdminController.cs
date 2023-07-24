@@ -29,6 +29,16 @@ public class AdminController : Controller
         return View();
     }
 
+    [HttpGet("/admin/user")]
+    public IActionResult GetUsers()
+    {
+        List<User> users = this._context.User.ToList();
+
+        ViewBag.users = users;
+        return View("User");
+    }
+
+
     [HttpPost]
     public IActionResult PlaceRegister(Place place)
     {
