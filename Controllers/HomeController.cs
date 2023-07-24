@@ -32,7 +32,7 @@ public class HomeController : Controller
     [HttpPost]
     public async Task<JsonResult> getPosts(PaginateScroll paginateScroll)
     {
-        List<PostResult> result = this._context.Post.GroupJoin(this._context.Media, p => p.id, me => me.postId, (p, meg) => new
+        List<PostResult> result = this._context.Post.Where(p => p.id > paginateScroll.startId).Take(paginateScroll.limit).GroupJoin(this._context.Media, p => p.id, me => me.postId, (p, meg) => new
         {
             post = p,
             media = meg.ToList()
