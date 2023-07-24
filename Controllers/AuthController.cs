@@ -37,15 +37,25 @@ public class AuthController : Controller
 
         if (verifyUser == null)
         {
-            ViewBag["Message"] = "Thông tin đăng nhập không chính xác";
-            return RedirectToAction(null);
+            ViewBag.Message = "Thông tin đăng nhập không chính xác";
+            return View("Login");
+        }
+
+        string role = "";
+        if (verifyUser.role == Role.ADMIN)
+        {
+            role = "admin";
+        }
+        else
+        {
+            role = "user";
         }
 
         var claims = new List<Claim>{
             new Claim(ClaimTypes.Name,  verifyUser.id.ToString()),
             new Claim("email", verifyUser.email),
             new Claim("phone", verifyUser.phoneNumber),
-            new Claim(ClaimTypes.Role, verifyUser.role.ToString()),
+            new Claim(ClaimTypes.Role, role),
         };
 
         var claimsIdentity = new ClaimsIdentity(
@@ -61,11 +71,15 @@ public class AuthController : Controller
 
         this._logger.LogInformation("User {Id} logged in at {Time}.",
                    verifyUser.id, DateTime.UtcNow);
+        if (verifyUser.role == Role.USER)
+        {
+            return RedirectToAction("Index", "Home", new { area = "" });
+        }
+        return RedirectToAction("Index", "Admin", new { area = "" });
 
-        return RedirectToAction("Index", "Home", new { area = "" });
     }
-    
-    [HttpPost("logout")]
+
+    [HttpGet("logout")]
     private async Task<IActionResult> logout()
     {
         // Clear the existing external cookie
